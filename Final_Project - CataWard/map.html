@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sorsogon Province disaster-readiness map. Explore typhoon, flood, earthquake, landslide, and tsunami hazard information for Sorsogon. Powered by CataWard.">
+  <meta name="keywords" content="Sorsogon hazard map, disaster preparedness, typhoon, flood, earthquake, landslide, tsunami, Philippines DRRM">
+  <link rel="icon" href="assets/images/CataWard_Icon.png">
+
+  <!-- Shared site styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="assets/styles/main.css">
+
+  <!-- Leaflet CSS (v1.9.4 — stable, CDN, no API key required) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="anonymous">
+
+  <!-- Map page styles -->
+  <link rel="stylesheet" href="assets/styles/map.css">
+
+  <title>Hazard Map | CataWard</title>
+</head>
+
+<body>
+  <!-- Skip navigation (accessibility) -->
+  <a class="skip-nav" id="skip-to-map" href="#hazard-map">Skip to map</a>
+
+  <!-- ===== HEADER (matches existing site) ===== -->
+  <header>
+    <div class="header-container">
+      <img src="assets/images/Cataward-Logo.png" alt="CataWard Logo" class="logo">
+      <nav aria-label="Main navigation">
+        <ul>
+          <li class="dropdown">
+            <div class="dropdown-toggle">
+              <label class="topics" for="dropdown-toggle">Disasters</label>
+              <span class="dropdown-arrow"><i class="fas fa-chevron-down fa-sm" aria-hidden="true"></i></span>
+              <div class="dropdown-menu" role="menu">
+                <a href="contents/Typhoon.html" role="menuitem">Typhoon</a>
+                <a href="contents/Flood.html" role="menuitem">Flood</a>
+                <a href="contents/Earthquake.html" role="menuitem">Earthquake</a>
+                <a href="contents/Landslide.html" role="menuitem">Landslide</a>
+                <a href="contents/Tsunami.html" role="menuitem">Tsunami</a>
+              </div>
+            </div>
+          </li>
+          <!-- Map link — active on this page -->
+          <li><a href="map.html" aria-current="page"
+                 style="color:aquamarine;font-weight:700;">🗺 Hazard Map</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contacts</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAP PAGE WRAPPER ===== -->
+  <div class="map-page-wrapper" role="main" aria-label="Sorsogon Hazard Map">
+
+    <!-- Disclaimer banner — always visible -->
+    <div id="map-disclaimer" role="note" aria-label="Safety disclaimer">
+      <strong>⚠️ DISCLAIMER:</strong>
+      This map is for <strong>informational and preparedness planning</strong> purposes only.
+      It does <strong>not</strong> show real-time alerts, live road conditions, or current hazard activity.
+      Data is static and may not reflect the latest conditions.
+      <strong>Always follow current instructions from your local DRRMO, PAGASA, PHIVOLCS, and official alerts.</strong>
+      In an emergency, call <strong>911</strong>.
+    </div>
+
+    <div class="map-layout">
+
+      <!-- ===== SIDEBAR ===== -->
+      <aside id="map-sidebar" aria-label="Map controls and information">
+
+        <!-- Sidebar header -->
+        <div class="sidebar-header">
+          <span>🗺 Sorsogon Hazard Map</span>
+        </div>
+
+        <!-- Municipality / city jump selector -->
+        <div class="sidebar-section">
+          <h2 id="municipality-label">Go to Municipality</h2>
+          <label for="municipality-selector" class="sr-only">Select municipality or city</label>
+          <select id="municipality-selector" aria-labelledby="municipality-label"
+                  style="width:100%;padding:7px 8px;font-family:'Roboto Mono',monospace;
+                         font-size:0.8rem;border:1px solid #a5c8b0;border-radius:5px;
+                         background:#fff;color:#1a3828;">
+            <option value="" data-lat="" data-lng="">— Show all of Sorsogon —</option>
+            <!-- Coordinates sourced from OpenStreetMap Nominatim (approximate town centres).
+                 These are navigation convenience points only — no hazard characterisation. -->
+            <option value="sorsogon-city"  data-lat="12.9742" data-lng="124.0035">Sorsogon City</option>
+            <option value="barcelona"      data-lat="12.8693" data-lng="124.1407">Barcelona</option>
+            <option value="bulan"          data-lat="12.6679" data-lng="123.8748">Bulan</option>
+            <option value="bulusan"        data-lat="12.7476" data-lng="124.1319">Bulusan</option>
+            <option value="casiguran"      data-lat="12.8736" data-lng="124.0149">Casiguran</option>
+            <option value="castilla"       data-lat="12.9554" data-lng="123.8772">Castilla</option>
+            <option value="donsol"         data-lat="12.9064" data-lng="123.5968">Donsol</option>
+            <option value="gubat"          data-lat="12.9185" data-lng="124.1205">Gubat</option>
+            <option value="irosin"         data-lat="12.7054" data-lng="124.0309">Irosin</option>
+            <option value="juban"          data-lat="12.8448" data-lng="123.9891">Juban</option>
+            <option value="magallanes"     data-lat="12.8221" data-lng="123.8337">Magallanes</option>
+            <option value="matnog"         data-lat="12.5815" data-lng="124.0843">Matnog</option>
+            <option value="pilar"          data-lat="12.9244" data-lng="123.6780">Pilar</option>
+            <option value="prieto-diaz"    data-lat="13.0438" data-lng="124.1955">Prieto Diaz</option>
+            <option value="sta-magdalena"  data-lat="12.6455" data-lng="124.0952">Sta. Magdalena</option>
+          </select>
+          <p style="font-size:0.68rem;color:#555;font-family:'Roboto Mono',monospace;margin:5px 0 0;">
+            Town-centre coordinates: OSM Nominatim, 2026-09-27.
+            Navigation convenience only.
+          </p>
+        </div>
+
+        <!-- Hazard layer toggles -->
+        <div class="sidebar-section">
+          <h2>Hazard Layers</h2>
+          <div id="hazard-toggles" class="hazard-toggles" role="group" aria-label="Hazard layer toggles">
+            <!-- Populated by map.js after sources.json loads -->
+            <p style="font-size:0.78rem;font-family:'Roboto Mono',monospace;color:#555;">
+              Loading layers…
+            </p>
+          </div>
+        </div>
+
+        <!-- Layer info + source -->
+        <div class="sidebar-section" id="layer-info" aria-live="polite" aria-label="Layer information">
+          <p style="color:#666;font-size:0.8rem;font-family:'Roboto Mono',monospace;">
+            Select a hazard layer to view source information.
+          </p>
+        </div>
+
+        <!-- Legend -->
+        <div class="sidebar-section" id="map-legend" aria-label="Map legend">
+          <h2>Legend</h2>
+          <div class="legend-item">
+            <div class="legend-swatch province" aria-hidden="true"></div>
+            <span>Province boundary (GADM reference)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch unavail" aria-hidden="true"></div>
+            <span>Layer data not yet available</span>
+          </div>
+          <p style="font-size:0.68rem;font-family:'Roboto Mono',monospace;color:#666;margin-top:6px;">
+            Hazard layer colours will appear in the legend when verified data is loaded.
+          </p>
+        </div>
+
+        <!-- Searchable location list (keyboard alternative) -->
+        <div class="sidebar-section" id="location-list-panel" aria-label="Searchable features list">
+          <h2>Features in Active Layer</h2>
+          <label for="location-search" class="sr-only">Search features</label>
+          <input type="search" id="location-search" placeholder="Search features…" disabled
+                 aria-label="Search features in the active layer">
+          <ul id="location-list" role="listbox" aria-label="Feature list" aria-live="polite">
+            <li class="loc-empty" tabindex="0">No active layer selected.</li>
+          </ul>
+        </div>
+
+        <!-- Emergency contacts -->
+        <div class="sidebar-section" aria-label="Emergency contacts">
+          <h2>Emergency Contacts</h2>
+          <ul id="emergency-contact-list" class="emergency-list" aria-label="Emergency hotlines">
+            <!-- Populated by map.js from sources.json -->
+            <li><span class="emg-number">911</span> <span>National Emergency Hotline</span></li>
+            <li><span class="emg-number">143</span> <span>Philippine Red Cross</span></li>
+          </ul>
+          <p id="contacts-source-note" style="font-size:0.65rem;color:#888;
+             font-family:'Roboto Mono',monospace;margin-top:8px;"></p>
+        </div>
+
+        <!-- Locate Me -->
+        <div class="sidebar-section">
+          <h2>My Location</h2>
+          <button id="locate-me-btn" type="button"
+                  aria-label="Find and show your approximate location on the map"
+                  style="width:100%;padding:9px 12px;background:#212e26;color:#fff;
+                         border:2px solid aquamarine;border-radius:6px;cursor:pointer;
+                         font-family:'Roboto Mono',monospace;font-size:0.82rem;
+                         font-weight:700;">
+            📍 Locate Me (opt-in)
+          </button>
+          <p style="font-size:0.68rem;color:#666;font-family:'Roboto Mono',monospace;
+                    margin-top:6px;line-height:1.4;">
+            Your location is shown on the map only. It is never stored or transmitted.
+            You will be asked for browser permission.
+          </p>
+        </div>
+
+      </aside>
+      <!-- /.map-sidebar -->
+
+      <!-- ===== MAP CONTAINER ===== -->
+      <div style="position:relative;flex:1;display:flex;flex-direction:column;">
+
+        <!-- Mobile sidebar toggle -->
+        <button id="sidebar-toggle" type="button"
+                aria-expanded="false"
+                aria-controls="map-sidebar"
+                aria-label="Toggle layer controls panel">
+          ☰ Layers
+        </button>
+
+        <!-- Map div -->
+        <div id="hazard-map" tabindex="0" aria-label="Interactive hazard map of Sorsogon Province"></div>
+
+        <!-- Loading overlay -->
+        <div id="loading-overlay" class="map-overlay" role="status" aria-live="polite">
+          <div class="overlay-icon">⏳</div>
+          <div class="overlay-title">Loading map data…</div>
+          <div class="overlay-body">Please wait while the data catalog is loaded.</div>
+        </div>
+
+        <!-- Error overlay (hidden by default) -->
+        <div id="error-overlay" class="map-overlay hidden" role="alert" aria-live="assertive">
+          <div class="overlay-icon">⚠️</div>
+          <div class="overlay-title">Could not load data</div>
+          <div class="overlay-body">Please refresh the page. If the problem persists, check your internet connection.</div>
+        </div>
+
+      </div>
+      <!-- /.map area -->
+
+    </div>
+    <!-- /.map-layout -->
+
+    <!-- Data attribution strip -->
+    <div id="data-attribution" aria-label="Map data attribution">
+      Map tiles: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a>
+      &amp; <a href="https://carto.com/attributions" target="_blank" rel="noopener">© CARTO</a>.
+      Province boundary: <a href="https://gadm.org/license.html" target="_blank" rel="noopener">GADM v4.1</a> (non-commercial use).
+      Hazard layer sources: PAGASA, PHIVOLCS, MGB/DENR — see layer info panel for details.
+      This map is static and informational; data currency is not guaranteed.
+    </div>
+
+  </div>
+  <!-- /.map-page-wrapper -->
+
+  <!-- ===== FOOTER (matches existing site) ===== -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Hotline Number</h3>
+          <ul>
+            <li>Emergency Hotline - #911</li>
+            <li>Red Cross: #143</li>
+            <li>National Complaint Hotline: #8888</li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="map.html">Hazard Map</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Legal Information</h3>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms &amp; Conditions</a></li>
+            <li><a href="#">Disclaimer</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="social-links">
+        <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+        <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+        <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+        <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+      </div>
+      <p>&copy; 2024 CataWard. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS (v1.9.4, integrity checked, CDN) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN2GqLs="
+          crossorigin="anonymous"></script>
+
+  <!-- Map page logic -->
+  <script src="assets/js/map.js"></script>
+
+</body>
+</html>

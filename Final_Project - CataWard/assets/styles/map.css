@@ -1,0 +1,495 @@
+/* =============================================================
+   CataWard — Sorsogon Hazard Map Page Styles
+   Follows the existing site conventions:
+     - Background: #212e26 (header/footer)
+     - Accent: aquamarine / #16c92a
+     - Font families: Roboto Mono (UI), Archivo Black (headings)
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+/* ---------- Layout shell ---------- */
+
+.map-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 141px); /* subtract header height; adjusted via JS for footer */
+  min-height: 500px;
+}
+
+/* Sidebar + map area */
+.map-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ---------- Sidebar ---------- */
+
+#map-sidebar {
+  width: 320px;
+  min-width: 220px;
+  max-width: 400px;
+  background: #f9fafb;
+  border-right: 2px solid #c8e6d4;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+
+#map-sidebar.collapsed {
+  transform: translateX(-100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.sidebar-header {
+  background: #212e26;
+  color: #fff;
+  padding: 14px 16px 10px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-section {
+  padding: 14px 16px;
+  border-bottom: 1px solid #d8edd9;
+}
+
+.sidebar-section h2 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1a3828;
+  margin: 0 0 10px;
+}
+
+/* ---------- Hazard toggle buttons ---------- */
+
+.hazard-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hazard-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #edf7ef;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1a3828;
+  text-align: left;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  width: 100%;
+}
+
+.hazard-btn:focus-visible {
+  outline: 3px solid #16c92a;
+  outline-offset: 2px;
+}
+
+.hazard-btn .hazard-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid rgba(0,0,0,0.15);
+}
+
+.hazard-btn[data-hazard="typhoon"]   .hazard-dot { background: #2196f3; }
+.hazard-btn[data-hazard="flood"]     .hazard-dot { background: #1e88e5; }
+.hazard-btn[data-hazard="earthquake"].hazard-dot { background: #e53935; }
+.hazard-btn[data-hazard="landslide"] .hazard-dot { background: #795548; }
+.hazard-btn[data-hazard="tsunami"]   .hazard-dot { background: #00acc1; }
+
+.hazard-btn .hazard-status-badge {
+  margin-left: auto;
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: #c8e6d4;
+  color: #1a3828;
+  white-space: nowrap;
+}
+
+.hazard-btn[data-status="unavailable"] .hazard-status-badge {
+  background: #ffe0e0;
+  color: #b71c1c;
+}
+
+.hazard-btn.active {
+  background: #212e26;
+  color: #fff;
+  border-color: aquamarine;
+}
+
+.hazard-btn.active .hazard-status-badge {
+  background: rgba(127,255,212,0.2);
+  color: aquamarine;
+}
+
+/* ---------- Layer info panel ---------- */
+
+#layer-info {
+  padding: 14px 16px;
+  border-bottom: 1px solid #d8edd9;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.78rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+#layer-info h3 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.85rem;
+  margin: 0 0 8px;
+  color: #1a3828;
+}
+
+#layer-info .source-label {
+  font-weight: 700;
+  color: #212e26;
+}
+
+#layer-info a {
+  color: #0d6e36;
+  word-break: break-all;
+}
+
+#layer-info a:hover { color: #16c92a; }
+
+.layer-unavailable-notice {
+  background: #fff8e1;
+  border-left: 4px solid #f9a825;
+  padding: 10px 12px;
+  border-radius: 0 4px 4px 0;
+  margin-top: 8px;
+}
+
+.layer-unavailable-notice p { margin: 4px 0; }
+
+.guide-link-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 7px 12px;
+  background: #16c92a;
+  color: #fff;
+  border-radius: 5px;
+  text-decoration: none;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: background 0.18s;
+}
+
+.guide-link-btn:hover { background: #108b1f; color: #fff; }
+.guide-link-btn:focus-visible { outline: 3px solid #212e26; outline-offset: 2px; }
+
+/* ---------- Emergency contacts ---------- */
+
+.emergency-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.75rem;
+}
+
+.emergency-list li {
+  padding: 4px 0;
+  border-bottom: 1px dotted #c8e6d4;
+  display: flex;
+  flex-direction: column;
+}
+
+.emergency-list li:last-child { border-bottom: none; }
+.emergency-list .emg-number { font-weight: 700; color: #1a3828; font-size: 0.9rem; }
+.emergency-list .emg-note   { color: #666; font-size: 0.7rem; }
+
+/* ---------- Searchable list panel ---------- */
+
+#location-list-panel {
+  padding: 14px 16px;
+  border-bottom: 1px solid #d8edd9;
+}
+
+#location-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  border: 1px solid #a5c8b0;
+  border-radius: 5px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+#location-search:focus {
+  outline: 2px solid #16c92a;
+  border-color: #16c92a;
+}
+
+#location-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.78rem;
+}
+
+#location-list li {
+  padding: 6px 4px;
+  border-bottom: 1px solid #edf7ef;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+#location-list li:hover,
+#location-list li:focus {
+  background: #d0f0da;
+  outline: none;
+}
+
+#location-list li:focus-visible {
+  outline: 2px solid #16c92a;
+}
+
+#location-list .loc-empty {
+  color: #888;
+  font-style: italic;
+  cursor: default;
+}
+
+#location-list .loc-empty:hover { background: none; }
+
+/* ---------- Disclaimer banner ---------- */
+
+#map-disclaimer {
+  background: #fffde7;
+  border-top: 2px solid #f9a825;
+  padding: 8px 14px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.72rem;
+  color: #5d4037;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+#map-disclaimer strong { color: #e65100; }
+
+/* ---------- Map container ---------- */
+
+#hazard-map {
+  flex: 1;
+  position: relative;
+  background: #e8f5e9;
+  min-height: 0; /* allow flex shrink */
+}
+
+/* Leaflet attribution sits below the map content, keep readable */
+.leaflet-control-attribution {
+  font-size: 10px !important;
+}
+
+/* ---------- Sidebar toggle (mobile / collapsed) ---------- */
+
+#sidebar-toggle {
+  display: none; /* shown on small screens via media query */
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 500;
+  background: #212e26;
+  color: #fff;
+  border: 2px solid aquamarine;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+#sidebar-toggle:focus-visible {
+  outline: 3px solid aquamarine;
+  outline-offset: 2px;
+}
+
+/* ---------- Map loading / error overlays ---------- */
+
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(232, 245, 233, 0.9);
+  z-index: 400;
+  font-family: 'Roboto Mono', monospace;
+  text-align: center;
+  padding: 20px;
+  pointer-events: none;
+}
+
+.map-overlay.hidden { display: none; }
+
+.map-overlay .overlay-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.map-overlay .overlay-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.1rem;
+  color: #1a3828;
+  margin-bottom: 8px;
+}
+
+.map-overlay .overlay-body {
+  font-size: 0.82rem;
+  color: #444;
+  max-width: 340px;
+}
+
+/* ---------- Legend ---------- */
+
+#map-legend {
+  padding: 14px 16px;
+  border-bottom: 1px solid #d8edd9;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.76rem;
+  margin-bottom: 4px;
+  color: #1a3828;
+}
+
+.legend-swatch {
+  width: 20px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Province boundary swatch */
+.legend-swatch.province  { background: transparent; border: 2px solid #16c92a; }
+.legend-swatch.unavail   { background: repeating-linear-gradient(45deg, #ccc 0 4px, #fff 4px 8px); border: 1px solid #aaa; }
+
+/* ---------- Skip-nav link (accessibility) ---------- */
+
+.skip-nav {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-nav:focus {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10px;
+  width: auto;
+  height: auto;
+  padding: 10px 20px;
+  background: #212e26;
+  color: aquamarine;
+  z-index: 9999;
+  border-radius: 6px;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+/* ---------- Data attribution footer strip ---------- */
+
+#data-attribution {
+  background: #212e26;
+  color: #b2dfdb;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.68rem;
+  padding: 6px 16px;
+  text-align: center;
+}
+
+#data-attribution a { color: aquamarine; }
+
+/* ---------- Responsive / Mobile ---------- */
+
+@media (max-width: 700px) {
+  .map-page-wrapper {
+    height: auto;
+    min-height: 0;
+  }
+
+  .map-layout {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  #map-sidebar {
+    width: 100%;
+    max-width: 100%;
+    border-right: none;
+    border-bottom: 2px solid #c8e6d4;
+    max-height: 55vh;
+    overflow-y: auto;
+  }
+
+  #map-sidebar.collapsed {
+    transform: translateY(-100%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+  }
+
+  #sidebar-toggle {
+    display: block;
+  }
+
+  #hazard-map {
+    height: 60vw;
+    min-height: 280px;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  #map-sidebar,
+  .hazard-btn,
+  .guide-link-btn {
+    transition: none;
+  }
+}

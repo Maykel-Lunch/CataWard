@@ -1,0 +1,116 @@
+{
+  "_comment": "CataWard Sorsogon Hazard Map — Data Source Catalog. Each layer entry records the authoritative source, access status, and instructions for adding verified data. Do NOT add fabricated data; mark unavailable layers as such.",
+  "basemap": {
+    "provider": "OpenStreetMap contributors via CARTO (Positron light basemap)",
+    "tile_url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    "attribution": "© <a href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener'>OpenStreetMap</a> contributors &copy; <a href='https://carto.com/attributions' target='_blank' rel='noopener'>CARTO</a>",
+    "license": "ODbL (OpenStreetMap data); see https://carto.com/legal/ for CARTO tile terms",
+    "accessed": "2026-09-27"
+  },
+  "province_boundary": {
+    "name": "Sorsogon Province Administrative Boundary",
+    "status": "available",
+    "source_organization": "GADM — Global Administrative Areas",
+    "dataset_title": "GADM data for Philippines, Level 2 (Province)",
+    "source_url": "https://gadm.org/download_country.html#PHI",
+    "license": "Free for non-commercial use; see https://gadm.org/license.html",
+    "accessed": "2026-09-27",
+    "notes": "Province polygon extracted from GADM PHL level-2 GeoJSON. Used only to set map extent and draw a reference boundary. Does not imply any hazard characterisation."
+  },
+  "hazard_layers": {
+    "typhoon": {
+      "name": "Typhoon Hazard",
+      "status": "unavailable",
+      "source_organization": "PAGASA — Philippine Atmospheric, Geophysical and Astronomical Services Administration",
+      "dataset_title": "Sorsogon Typhoon Track / Storm Surge Hazard Map (provincial/municipal level)",
+      "source_url": "https://bagong.pagasa.dost.gov.ph/",
+      "how_to_obtain": "Request or download typhoon track data and storm surge hazard maps from PAGASA GIS portal or their Open Data page. PAGASA provides historical tropical cyclone track data in CSV/KML; convert to GeoJSON before loading.",
+      "how_to_add": "Place the GeoJSON file at assets/data/typhoon_hazard.geojson and set status to 'available'. Update the 'accessed' field and attribution in this file.",
+      "accessed": null,
+      "notes": "PAGASA provides wind signal maps and track forecasts operationally but static provincial-level storm surge hazard polygons for Sorsogon were not publicly downloadable as of 2026-09-27. The NDRRMC / OCD Sorsogon office may hold digitised versions."
+    },
+    "flood": {
+      "name": "Flood Hazard",
+      "status": "unavailable",
+      "source_organization": "MGB — Mines and Geosciences Bureau, DENR",
+      "dataset_title": "MGB Multi-Hazard Map — Flood Susceptibility, Sorsogon Province",
+      "source_url": "https://mgb.gov.ph/",
+      "how_to_obtain": "MGB publishes provincial multi-hazard maps on their website and coordinates with LGUs. Request the Sorsogon flood susceptibility GeoJSON or shapefile from MGB Regional Office V (Bicol).",
+      "how_to_add": "Place the GeoJSON at assets/data/flood_hazard.geojson and set status to 'available'. Add the MGB attribution string. Update 'accessed'.",
+      "accessed": null,
+      "notes": "MGB shapefile datasets for Sorsogon flood susceptibility were not freely downloadable in GeoJSON/shapefile format from a public web endpoint as of 2026-09-27. LGU DRRM offices sometimes host copies. NOAH (UP Nationwide Operational Assessment of Hazards) also produced flood maps — check https://noah.up.edu.ph/."
+    },
+    "earthquake": {
+      "name": "Earthquake Hazard",
+      "status": "unavailable",
+      "source_organization": "PHIVOLCS — Philippine Institute of Volcanology and Seismology",
+      "dataset_title": "Active Fault Lines and Earthquake-Induced Hazard Maps, Sorsogon",
+      "source_url": "https://www.phivolcs.dost.gov.ph/",
+      "how_to_obtain": "PHIVOLCS publishes active fault line data and earthquake-induced hazard maps. Download the Philippine Active Fault database (available as KML/shapefile from PHIVOLCS GIS) and filter to Sorsogon. Convert to GeoJSON.",
+      "how_to_add": "Place fault GeoJSON at assets/data/earthquake_faults.geojson and set status to 'available'. Add PHIVOLCS attribution. Update 'accessed'.",
+      "accessed": null,
+      "notes": "PHIVOLCS active fault map KML files are available on their website for download but require GIS conversion. As of 2026-09-27 a direct GeoJSON download endpoint for provincial scope was not confirmed. The East Sorsogon Fault and nearby Philippine Fault System segments are documented in PHIVOLCS literature."
+    },
+    "landslide": {
+      "name": "Landslide Hazard",
+      "status": "unavailable",
+      "source_organization": "MGB — Mines and Geosciences Bureau, DENR",
+      "dataset_title": "MGB Multi-Hazard Map — Landslide Susceptibility, Sorsogon Province",
+      "source_url": "https://mgb.gov.ph/",
+      "how_to_obtain": "Same as flood: request from MGB Regional Office V or check DOST GeoPortal / NAMRIA.",
+      "how_to_add": "Place the GeoJSON at assets/data/landslide_hazard.geojson and set status to 'available'. Add MGB attribution. Update 'accessed'.",
+      "accessed": null,
+      "notes": "MGB landslide susceptibility data for Sorsogon is referenced in provincial DRRM plans but was not freely available as a public GeoJSON endpoint as of 2026-09-27."
+    },
+    "tsunami": {
+      "name": "Tsunami Hazard",
+      "status": "unavailable",
+      "source_organization": "PHIVOLCS — Philippine Institute of Volcanology and Seismology",
+      "dataset_title": "Tsunami Inundation Hazard Maps, Sorsogon Coast",
+      "source_url": "https://www.phivolcs.dost.gov.ph/",
+      "how_to_obtain": "PHIVOLCS produces Tsunami Hazard Assessment and inundation maps for coastal municipalities. Contact PHIVOLCS or OCD Region V for the Sorsogon-specific inundation polygon shapefiles.",
+      "how_to_add": "Place the GeoJSON at assets/data/tsunami_inundation.geojson and set status to 'available'. Add PHIVOLCS attribution. Update 'accessed'.",
+      "accessed": null,
+      "notes": "Sorsogon is a high-priority province for PHIVOLCS tsunami assessment given its coastline exposure. As of 2026-09-27 digitised inundation GeoJSON for the province was not found at a public download endpoint; printed/raster maps exist in PHIVOLCS publications."
+    }
+  },
+  "point_layers": {
+    "evacuation_centers": {
+      "name": "Designated Evacuation Centers",
+      "status": "unavailable",
+      "source_organization": "DSWD / OCD / Sorsogon Provincial DRRMO",
+      "dataset_title": "Official Designated Evacuation Centers, Sorsogon Province",
+      "source_url": "https://ors2.dswd.gov.ph/ or contact Sorsogon PDRRMO",
+      "how_to_obtain": "Request the official list from the Sorsogon Province DRRM Office (PDRRMO) or DSWD Region V. Data must include facility name, barangay, municipality, GPS coordinates, and verification date.",
+      "how_to_add": "Create assets/data/evacuation_centers.geojson following the schema in the data README. Set status to 'available'. Include the source contact and date.",
+      "accessed": null,
+      "notes": "Do not use crowd-sourced or unverified lists. Evacuation center designations change after every disaster; always check current PDRRMO records."
+    },
+    "hospitals": {
+      "name": "Hospitals and Health Facilities",
+      "status": "unavailable",
+      "source_organization": "DOH — Department of Health, Philippines",
+      "dataset_title": "Licensed Health Facilities, Region V — Sorsogon",
+      "source_url": "https://hfr.doh.gov.ph/",
+      "how_to_obtain": "DOH maintains the Health Facility Registry (HFR) at https://hfr.doh.gov.ph/. Filter by Region V, Province: Sorsogon. Data includes facility name, type, address, contact. Export/scrape with DOH permission or request a data share.",
+      "how_to_add": "Create assets/data/hospitals.geojson with DOH HFR data. Set status to 'available'. Include facility name, address, contact, DOH license number, and access date.",
+      "accessed": null,
+      "notes": "DOH HFR data was accessible via the web interface but bulk GeoJSON export was not confirmed as of 2026-09-27. A manual survey or FOIA request may be needed."
+    }
+  },
+  "emergency_contacts": {
+    "national": [
+      { "name": "National Emergency Hotline", "number": "911", "notes": "24/7 nationwide" },
+      { "name": "Philippine Red Cross", "number": "143", "notes": "24/7 nationwide" },
+      { "name": "NDRRMC Operations Center", "number": "(02) 8911-5061 to 65", "notes": "National Disaster Risk Reduction and Management Council" },
+      { "name": "PAGASA 24-hr Weather", "number": "(02) 8284-0800", "notes": "Weather inquiries" },
+      { "name": "PHIVOLCS 24-hr", "number": "(02) 8426-1468 to 79", "notes": "Earthquake and volcanic eruption information" }
+    ],
+    "sorsogon": [
+      { "name": "Sorsogon PDRRMO", "number": "Not verified — contact LGU", "notes": "Contact the Sorsogon Province DRRM Office for current numbers" },
+      { "name": "Sorsogon City CDRRMO", "number": "Not verified — contact LGU", "notes": "Contact Sorsogon City government for current numbers" }
+    ],
+    "source_note": "National hotlines sourced from NDRRMC and agency websites as of 2026-09-27. Local LGU numbers were not independently verified; contact the Sorsogon LGU directly for current operational numbers.",
+    "accessed": "2026-09-27"
+  }
+}
