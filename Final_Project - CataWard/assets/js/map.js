@@ -113,7 +113,13 @@ let provinceLayer = null;  // reference boundary layer (always shown)
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initMap();
+  try {
+    initMap();
+    hideOverlay('loading-overlay');
+  } catch (err) {
+    console.error('Failed to initialise the map:', err);
+    showOverlay('error-overlay', 'The map library could not be loaded. Check your connection and refresh the page.');
+  }
   loadSources();
   wireUI();
 });
@@ -125,15 +131,12 @@ function initMap() {
     zoomControl: true,
   });
 
-  /* Basemap — CARTO Positron (light, readable, open)
-     Attribution required by OpenStreetMap ODbL and CARTO terms. */
+  /* OpenStreetMap standard tiles; attribution is required. */
   L.tileLayer(
-    'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors' +
-        ' &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>',
-      subdomains: 'abcd',
+        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
       maxZoom: 19,
     }
   ).addTo(map);
@@ -204,7 +207,7 @@ function buildHazardButtons(src) {
 
     btn.innerHTML = `
       <span class="hazard-dot" aria-hidden="true"></span>
-      <span>${cfg.emoji} ${cfg.label}</span>
+      <span>${cfg.label}</span>
       <span class="hazard-status-badge">${status === 'available' ? 'Active' : 'No data'}</span>
     `;
 

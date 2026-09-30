@@ -1,10 +1,10 @@
 {
   "_comment": "CataWard Sorsogon Hazard Map — Data Source Catalog. Each layer entry records the authoritative source, access status, and instructions for adding verified data. Do NOT add fabricated data; mark unavailable layers as such.",
   "basemap": {
-    "provider": "OpenStreetMap contributors via CARTO (Positron light basemap)",
-    "tile_url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    "attribution": "© <a href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener'>OpenStreetMap</a> contributors &copy; <a href='https://carto.com/attributions' target='_blank' rel='noopener'>CARTO</a>",
-    "license": "ODbL (OpenStreetMap data); see https://carto.com/legal/ for CARTO tile terms",
+    "provider": "OpenStreetMap contributors",
+    "tile_url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribution": "© <a href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener'>OpenStreetMap</a> contributors",
+    "license": "OpenStreetMap data is available under the Open Database License (ODbL); see https://www.openstreetmap.org/copyright",
     "accessed": "2026-09-27"
   },
   "province_boundary": {
