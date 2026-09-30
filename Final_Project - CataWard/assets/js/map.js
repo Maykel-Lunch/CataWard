@@ -28,7 +28,8 @@
    Constants
    ============================================================ */
 
-const SOURCES_URL = '../assets/data/sources.json';
+const SOURCES_URL = 'assets/data/sources.json';
+const SOURCES_TIMEOUT_MS = 5000;
 
 /**
  * Sorsogon Province approximate bounding box (WGS84).
@@ -161,8 +162,11 @@ function initMap() {
    ============================================================ */
 
 async function loadSources() {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), SOURCES_TIMEOUT_MS);
+
   try {
-    const res = await fetch(SOURCES_URL);
+    const res = await fetch(SOURCES_URL, { signal: controller.signal });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     sources = await res.json();
     buildHazardButtons(sources);
@@ -170,7 +174,10 @@ async function loadSources() {
     hideOverlay('loading-overlay');
   } catch (err) {
     console.error('Failed to load sources.json:', err);
+    hideOverlay('loading-overlay');
     showOverlay('error-overlay', 'Could not load data catalog. Please refresh or check your connection.');
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
@@ -257,7 +264,7 @@ async function toggleHazard(key) {
 
   /* Attempt to load the GeoJSON */
   try {
-    const url = `../assets/data/${key}_hazard.geojson`;
+    const url = `assets/data/${key}_hazard.geojson`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const geojson = await res.json();
